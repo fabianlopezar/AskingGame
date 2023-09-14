@@ -9,16 +9,19 @@ public class ReadTxtFile : MonoBehaviour
 {
     public TextAsset _fileQuestions;
     private List<PreguntasMultiples> _listQuestions = new List<PreguntasMultiples>();
-    [Header("Textos")]
+    #region text
+
     public TMP_Text _opc1Text;
     public TMP_Text _opc2Text;
     public TMP_Text _opc3Text;
     public TMP_Text _opc4Text;
     public TMP_Text _questionText;
+    #endregion
     [Header("Paneles")]
     public  GameObject _panelGameOver;
     public  GameObject _panelGameWin;
-    public int _indice=0;
+    //public int _indice=0;
+    public int _indice;
 
     private void Start()
     {
@@ -26,7 +29,8 @@ public class ReadTxtFile : MonoBehaviour
         _panelGameWin.SetActive(false);    
         FileReading();
         UpdateUIQuestions();
-   
+        _indice = Random.Range(0, 22);
+
     }
 
     public void FileReading()
@@ -94,20 +98,23 @@ public class ReadTxtFile : MonoBehaviour
     public void NextQuestion()
     {
         _panelGameWin.SetActive(false);
-        _indice++;
-        if (_listQuestions[_indice] == null)
+       
+        if (_listQuestions[_indice+1] == null)
         {
             _indice = 0;
             NextQuestion();
         }
         else
         {
+            _indice++;
             UpdateUIQuestions();
             Debug.Log("SOY el indice:" + _indice);
             Debug.Log("SOY LA RESPUESTA: " + _listQuestions[_indice].OpcCorrecta);
         }
-       
-       
-       
+    }
+    public void NextQuestionRandom()
+    {
+        _panelGameWin.SetActive(false);
+        _indice = Random.Range(0, 22);
     }
 }
