@@ -1,36 +1,32 @@
 using UnityEngine;
-using System.IO;
 using System.Collections.Generic;
 using Models;
 using TMPro;
-using UnityEngine.UI;
-
 public class ReadTxtFile : MonoBehaviour
 {
     public TextAsset _fileQuestions;
     private List<PreguntasMultiples> _listQuestions = new List<PreguntasMultiples>();
     #region text
-
+    [Header("Textos")]
     public TMP_Text _opc1Text;
     public TMP_Text _opc2Text;
     public TMP_Text _opc3Text;
     public TMP_Text _opc4Text;
     public TMP_Text _questionText;
+    public TMP_Text _numeroPreguntaUI;
     #endregion
     [Header("Paneles")]
     public  GameObject _panelGameOver;
     public  GameObject _panelGameWin;
     //public int _indice=0;
     public int _indice;
-
     private void Start()
     {
-        _panelGameOver.SetActive(false);
+     _panelGameOver.SetActive(false);
         _panelGameWin.SetActive(false);    
         FileReading();
+        NextQuestionRandom();
         UpdateUIQuestions();
-        _indice = Random.Range(0, 22);
-
     }
 
     public void FileReading()
@@ -69,10 +65,17 @@ public class ReadTxtFile : MonoBehaviour
         _opc3Text.text = _listQuestions[_indice].Opc3;
         _opc4Text.text = _listQuestions[_indice].Opc4;
         _questionText.text = _listQuestions[_indice].Pregunta;
-       
+        if (_indice >= 10)
+        {
+            _numeroPreguntaUI.text = "" + _indice;
+        }
+        else { _numeroPreguntaUI.text = "0" + _indice; }
+     
+
     }
     public void OnButtonClick(TMP_Text pregunta)
     {
+        Debug.Log("Soy la seleccionada: "+pregunta.text+" soy la Respuesta: "+_listQuestions[_indice].OpcCorrecta);
         if (pregunta.text == _listQuestions[_indice].OpcCorrecta)
         {
             CorrectResponse();
@@ -108,13 +111,12 @@ public class ReadTxtFile : MonoBehaviour
         {
             _indice++;
             UpdateUIQuestions();
-            Debug.Log("SOY el indice:" + _indice);
-            Debug.Log("SOY LA RESPUESTA: " + _listQuestions[_indice].OpcCorrecta);
         }
     }
     public void NextQuestionRandom()
     {
         _panelGameWin.SetActive(false);
-        _indice = Random.Range(0, 22);
+        _indice = Random.Range(0, 21);
+        UpdateUIQuestions();
     }
 }
